@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+stackapi = "*"
+gensim = "*"
+bs4 = "*"
+requests = "*"
+numpy = "*"
+spacy = "*"
+spacy-langdetect = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

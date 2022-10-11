@@ -42,7 +42,7 @@ if __name__ == "__main__":
     voteQ_corpus = [voteQ_dictionary.doc2bow(text) for text in raw_texts]
 
     ##train elda
-    lda = EnsembleLda(corpus=voteQ_corpus, id2word=voteQ_dictionary, num_topics=20, num_models=10)
+    lda = EnsembleLda(corpus=voteQ_corpus, id2word=voteQ_dictionary, num_topics=5, num_models=20)
     lda.save("test_elda")
 
 

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-path = "data/models/draw"
+path = "data/models/web-crawler"
 file = "/test_result_" + path.split('/')[2] + ".json"
 
 if __name__ == "__main__":

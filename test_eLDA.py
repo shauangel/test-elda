@@ -1,26 +1,31 @@
-import gensim
-from gensim.test.utils import common_texts
-from gensim.corpora.dictionary import Dictionary
 from gensim.models import EnsembleLda
-
 from gensim.corpora.dictionary import Dictionary
-from gensim.models import LdaModel
+from gensim.models.coherencemodel import CoherenceModel
+#from gensim.models import LdaModel
 
 from TextAnalyze import TextAnalyze
 import json
+from pathlib import Path
 #from gensim.parsing.preprocessing import preprocess_string, strip_punctuation, strip_numeric
 
+data_path = "data/"
+resource_file = "vote100_database_full_post.json"
+result_dir = data_path + "models/" + resource_file.split("_")[1]
 
 def trainEnsembleLDA(num_topic, num_model):
     ##train elda
     elda = EnsembleLda(corpus=voteQ_corpus, id2word=voteQ_dictionary, num_topics=num_topic, num_models=num_model)
-    elda.save("test_elda")
+    try:
+        elda.save(result_dir+ "/elda_model_"+str(num_topic))
+    except:
+        Path(result_dir).mkdir(parents=True, exist_ok=True)
+        elda.save(result_dir + "/elda_model_" + str(num_topic))
     return elda
 
 if __name__ == "__main__":
 
     ##loading resources
-    with open("voteQ_full_post.json", "r", encoding='utf-8') as f:
+    with open(data_path+resource_file, "r", encoding='utf-8') as f:
         data = json.load(f)
         f.close()
 
@@ -37,8 +42,6 @@ if __name__ == "__main__":
         tokens, doc = analyzer.contentPreProcess(q['question']['abstract'])
         raw_texts.append(tokens)
 
-        print("--" * 10)
-
     print("-" * 10 + "Creating Corpus" + "-" * 10)
     ##transfer to bag-of-words
     voteQ_dictionary = Dictionary(raw_texts)
@@ -46,7 +49,7 @@ if __name__ == "__main__":
     voteQ_corpus = [voteQ_dictionary.doc2bow(text) for text in raw_texts]
 
     #num_topic = 30
-    num_model = 15
+    num_model = 5
     totalTest = 1
     print("-" * 10 + "Start Training Models" + "-" * 10)
 
@@ -70,22 +73,61 @@ if __name__ == "__main__":
                 failed+=1
                 topics = "err"
                 print("no stable topic detected~~~")
-        print("-" * 10 + "Test Result" + "-" * 10)
 
+    ##Visulize train result
+        print("-" * 10 + "Test Result" + "-" * 10)
+        #Statistical Measure
         print("AvgTopic: " + str(averageTopic/totalTest).zfill(3))
-        print("Sucess: " + str(totalTest - failed).zfill(3))
+        print("Success: " + str(totalTest - failed).zfill(3))
         print("Failed: " + str(failed).zfill(3))
+
+        #Coherence Measure
+        texts = [[voteQ_dictionary[word_id] for word_id, freq in doc] for doc in voteQ_corpus]
+        c_v = ""
+        c_v_per_t = []
+        u_mass = ""
+        u_mass_per_t = []
+        ##c_v measure
+        cm_c_v_model = CoherenceModel(model=elda, texts=texts, corpus=voteQ_corpus, dictionary=voteQ_dictionary, coherence="c_v")
+        try:
+            c_v = "{:5.4f}".format(cm_c_v_model.get_coherence())
+            c_v_per_t = cm_c_v_model.get_coherence_per_topic()
+            ##aggregate value
+            print("C_v Measure: " + c_v)
+            ##each topic's value
+            print(c_v_per_t)
+        except:
+            print("no stable topic found...")
+
+        ##u_mass measure
+        cm_u_mass_model = CoherenceModel(model=elda, corpus=voteQ_corpus, dictionary=voteQ_dictionary, coherence="u_mass")
+        try:
+            u_mass = "{:5.4f}".format(cm_u_mass_model.get_coherence())
+            u_mass_per_t = cm_u_mass_model.get_coherence_per_topic()
+            print("U_mass Measure: " + u_mass)
+            print(u_mass_per_t)
+        except:
+            print("no stable topic found...")
+
+        #Display result
         test_result.append({
             str(num_topic).zfill(3):topics,
             "success":totalTest - failed,
             "failed":failed,
-            "avg_topic":averageTopic/totalTest
+            "avg_topic":averageTopic/totalTest,
+            "c_v":c_v,
+            "c_v_per_topic":c_v_per_t,
+            "u_mass":u_mass,
+            "u_mass_per_topic":u_mass_per_t
         })
+        print("-" * 10 + "Finished" + "-" * 10)
 
-    with open("test_result_" + str(num_model) + "_models.json", "w", encoding="utf-8") as f:
+
+    with open(result_dir + "/test_result_" + resource_file.split("_")[1] + ".json", "w", encoding="utf-8") as f:
         json.dump(test_result, f)
         f.close()
-    #lda = EnsembleLda.load("test_elda")
+
+
 
 
 

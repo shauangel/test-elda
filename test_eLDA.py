@@ -9,7 +9,7 @@ from pathlib import Path
 #from gensim.parsing.preprocessing import preprocess_string, strip_punctuation, strip_numeric
 
 data_path = "data/"
-resource_file = "vote100_database_full_post.json"
+resource_file = "vote100_web-crawler_full_post.json"
 result_dir = data_path + "models/" + resource_file.split("_")[1]
 
 def trainEnsembleLDA(num_topic, num_model):

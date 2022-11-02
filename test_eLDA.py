@@ -46,7 +46,7 @@ if __name__ == "__main__":
     voteQ_corpus = [voteQ_dictionary.doc2bow(text) for text in raw_texts]
 
     #num_topic = 30
-    num_model = 5
+    num_model = 15
     totalTest = 1
     print("-" * 10 + "Start Training Models" + "-" * 10)
 

@@ -2,15 +2,14 @@ import requests
 import json
 from StackData import StackData
 
-url = "https://api.stackexchange.com/2.3/questions?page=2&pagesize=100&order=desc&sort=votes&tagged=python&site=stackoverflow"
-file_name = "voteQ_2"
+#url = "https://api.stackexchange.com/2.3/questions?page=2&pagesize=100&order=desc&sort=votes&tagged=python;database&site=stackoverflow"
+file_name = "data/vote100_web-crawler"
+#resp = requests.get(url)
+#data = resp.json()
 
-resp = requests.get(url)
-data = resp.json()
-
-with open(file_name+"json", "w", encoding='utf-8') as f:
-    json.dump(data, f)
-    f.close()
+#with open(file_name+".json", "w", encoding='utf-8') as f:
+#    json.dump(data, f)
+#    f.close()
 
 
 with open(file_name+".json", "r", encoding='utf-8') as f:
@@ -27,8 +26,8 @@ except:
     result = []
 
 #for i in range(0, len(data)):
-print(len(data))
-for i in range(45, len(data), 5):
+print(len(result))
+for i in range(len(result), 100, 5):
     print("No. " + str(i).zfill(3) + "~" + "No. " + str(i+5-1).zfill(3))
 
     print("parsing...")
@@ -41,7 +40,7 @@ for i in range(45, len(data), 5):
 
     #result.append(q)
     #result.append(ans)
-    with open('voteQ_2_full_post.json', 'w', encoding='utf-8') as f:
+    with open(file_name+'_full_post.json', 'w', encoding='utf-8') as f:
         print(len(result))
         json.dump(result, f)
         f.close()

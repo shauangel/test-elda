@@ -22,6 +22,19 @@ def trainEnsembleLDA(num_topic, num_model):
         elda.save(result_dir + "/elda_model_" + str(num_topic))
     return elda
 
+def coherenceMeasure(model, corpus, dictionary, coherence, texts=""):
+    cm_model = CoherenceModel(model=model, texts=texts, corpus=corpus, dictionary=dictionary,
+                                  coherence=coherence)
+    try:
+        c_v = "{:5.4f}".format(cm_c_v_model.get_coherence())
+        c_v_per_t = cm_c_v_model.get_coherence_per_topic()
+        ##aggregate value
+        print("C_v Measure: " + c_v)
+        ##each topic's value
+        print(c_v_per_t)
+    except:
+        print("no stable topic found...")
+
 if __name__ == "__main__":
 
     ##loading resources
@@ -82,13 +95,11 @@ if __name__ == "__main__":
         print("Failed: " + str(failed).zfill(3))
 
         #Coherence Measure
-        texts = [[voteQ_dictionary[word_id] for word_id, freq in doc] for doc in voteQ_corpus]
-        c_v = ""
-        c_v_per_t = []
-        u_mass = ""
-        u_mass_per_t = []
+        c_v = ""; u_mass = ""; c_uci = ""; c_npmi = ""
+        c_v_per_t = []; u_mass_per_t = []; c_uci_per_t = []; c_npmi_per_t = []
+
         ##c_v measure
-        cm_c_v_model = CoherenceModel(model=elda, texts=texts, corpus=voteQ_corpus, dictionary=voteQ_dictionary, coherence="c_v")
+        cm_c_v_model = CoherenceModel(model=elda, topn=8, texts=raw_texts, corpus=voteQ_corpus, dictionary=voteQ_dictionary, coherence="c_v")
         try:
             c_v = "{:5.4f}".format(cm_c_v_model.get_coherence())
             c_v_per_t = cm_c_v_model.get_coherence_per_topic()
@@ -100,7 +111,7 @@ if __name__ == "__main__":
             print("no stable topic found...")
 
         ##u_mass measure
-        cm_u_mass_model = CoherenceModel(model=elda, corpus=voteQ_corpus, dictionary=voteQ_dictionary, coherence="u_mass")
+        cm_u_mass_model = CoherenceModel(model=elda, topn=8, corpus=voteQ_corpus, dictionary=voteQ_dictionary, coherence="u_mass")
         try:
             u_mass = "{:5.4f}".format(cm_u_mass_model.get_coherence())
             u_mass_per_t = cm_u_mass_model.get_coherence_per_topic()
@@ -108,6 +119,29 @@ if __name__ == "__main__":
             print(u_mass_per_t)
         except:
             print("no stable topic found...")
+
+        ##c_uci measure
+        cm_c_uci_model = CoherenceModel(model=elda, topn=8, texts=raw_texts, corpus=voteQ_corpus, dictionary=voteQ_dictionary,
+                                         coherence="c_uci")
+        try:
+            c_uci = "{:5.4f}".format(cm_c_uci_model.get_coherence())
+            c_uci_per_t = cm_c_uci_model.get_coherence_per_topic()
+            print("C_uci Measure: " + c_uci)
+            print(c_uci_per_t)
+        except:
+            print("no stable topic found...")
+
+        ##c_npmi measure
+        cm_c_npmi_model = CoherenceModel(model=elda, topn=8, texts=raw_texts, corpus=voteQ_corpus, dictionary=voteQ_dictionary,
+                                        coherence="c_npmi")
+        try:
+            c_npmi = "{:5.4f}".format(cm_c_npmi_model.get_coherence())
+            c_npmi_per_t = cm_c_npmi_model.get_coherence_per_topic()
+            print("C_npmi Measure: " + c_npmi)
+            print(c_npmi_per_t)
+        except:
+            print("no stable topic found...")
+
 
         #Display result
         test_result.append({
@@ -118,7 +152,11 @@ if __name__ == "__main__":
             "c_v":c_v,
             "c_v_per_topic":c_v_per_t,
             "u_mass":u_mass,
-            "u_mass_per_topic":u_mass_per_t
+            "u_mass_per_topic":u_mass_per_t,
+            "c_uci": c_uci,
+            "c_uci_per_topic": c_uci_per_t,
+            "c_npmi": c_npmi,
+            "c_npmi_per_topic": c_npmi_per_t
         })
         print("-" * 10 + "Finished" + "-" * 10)
 

@@ -142,3 +142,8 @@ def blockRanking(stack_items, qkey):
         all_content_flat[i]["score"] = temp_result[i]
     rank = sorted(all_content_flat, key=lambda data:data["score"], reverse=True)
     return rank
+
+if __name__ == "__main__":
+    analyzer = TextAnalyze()
+    text = "There is, of course, a lot more to the concept of topic model evaluation, and the coherence measure. However, keeping in mind the length, and purpose of this article, let’s apply these concepts into developing a model that is at least better than with the default parameters. Also, we’ll be re-purposing already available online pieces of code to support this exercise instead of re-inventing the wheel."
+    print(analyzer.contentPreProcess(text)[0])

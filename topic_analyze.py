@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-path = "data/models/web-crawler"
+path = "data/exp2/draw"
 file = "/test_result_" + path.split('/')[2] + ".json"
 
 def drawPlot(xPoints, yPoints, name):

@@ -9,8 +9,8 @@ from pathlib import Path
 #from gensim.parsing.preprocessing import preprocess_string, strip_punctuation, strip_numeric
 
 data_path = "data/"
-resource_file = "vote100_web-crawler_full_post.json"
-result_dir = data_path + "models/" + resource_file.split("_")[1]
+resource_file = "vote100_draw_full_post.json"
+result_dir = data_path + "exp2/" + resource_file.split("_")[1]
 
 def trainEnsembleLDA(num_topic, num_model):
     ##train elda

@@ -32,7 +32,7 @@ if __name__ == "__main__":
     ## Step 2.
     print("step2,")
     analyzer = TextAnalyze()
-    print(analyzer.contentPreProcess(sents_list[0])[0])
+    print(analyzer.contentPreProcess(" ".join(sents_list[0][0]))[0])
 
 
 

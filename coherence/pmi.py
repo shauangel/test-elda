@@ -25,5 +25,7 @@ class PMI:
 
     #計算pmi
     def pmi(self, x, y):
-        return log(self.pxy(x, y)/(self.p(x) * self.p(y)),2)
+        pmi_score = log(self.pxy(x, y)/(self.p(x) * self.p(y)),2)
+        print("pmi: " + str(pmi_score))
+        return pmi_score
 

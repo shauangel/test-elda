@@ -19,6 +19,7 @@ if __name__ == "__main__":
 
     pmi = PMI(words, sentences)
     #unique_w = list(dict.fromkeys(words))
+    #["weather", "york", "the", "team"]
     unique_w = ["game", "sport", "ball", "team"]
 
     """

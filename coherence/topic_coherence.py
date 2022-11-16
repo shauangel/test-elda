@@ -10,4 +10,5 @@ class UCI:
     def coherence(self):
         pmi_sum = sum([self._PMI.pmi(p[0], p[1]) for p in self._Comb])
         print("pmi_sum: " + str(pmi_sum))
-        return 2/(len(self._Comb)*(len(self._Comb)-1))*pmi_sum
+        print(self._Comb)
+        return (2/(len(self._Comb)*(len(self._Comb)-1)))*pmi_sum

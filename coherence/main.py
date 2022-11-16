@@ -5,7 +5,7 @@ import nltk
 from nltk.corpus import brown
 ##custom
 from pmi import PMI
-from topic_coherence import UCI
+from topic_coherence import UCI, UMass
 
 
 if __name__ == "__main__":
@@ -35,3 +35,7 @@ if __name__ == "__main__":
     ###uci
     #c_model = UCI(words, sentences, unique_w)
     #print(c_model.coherence())
+
+    ###umass
+    c_model = UMass(words, sentences, unique_w)
+    print(c_model.coherence())

@@ -18,6 +18,11 @@ class UMass:
     def __init__(self, tokens, sents, target_list):
         self._PMI = PMI(tokens, sents)
         self._Comb = list(itertools.combinations(target_list, 2))
+        self._Targ = target_list
+
+    def sortByProb(self):
+        prob_list = {k:self._PMI.p(k) for k in self._Targ}
+        print(prob_list)
 
     def conditionalProb(self, x, y):
         pxy = self._PMI.pxy(x, y)

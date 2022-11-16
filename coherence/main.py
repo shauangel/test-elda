@@ -39,3 +39,4 @@ if __name__ == "__main__":
     ###umass
     c_model = UMass(words, sentences, unique_w)
     print(c_model.coherence())
+    c_model.sortByProb()

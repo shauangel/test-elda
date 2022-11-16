@@ -17,15 +17,13 @@ class UCI:
 class UMass:
     def __init__(self, tokens, sents, target_list):
         self._PMI = PMI(tokens, sents)
-        self._Comb = list(itertools.combinations(target_list, 2))
-        self._Targ = target_list
+        self._Targ = self.sortByProb(target_list)
+        self._Comb = list(itertools.combinations(self._Targ, 2))
 
-    def sortByProb(self):
-        prob_list = {k:self._PMI.p(k) for k in self._Targ}
-        print(prob_list)
+    def sortByProb(self, target_list):
+        prob_list = {k:self._PMI.p(k) for k in target_list}
         prob_list = dict(sorted(prob_list.items(), key=lambda item: item[1], reverse=True))
-        print(prob_list)
-        print(list(prob_list.keys()))
+        return list(prob_list.keys())
 
 
     def conditionalProb(self, x, y):

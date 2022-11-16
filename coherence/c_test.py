@@ -1,3 +1,4 @@
+import nltk
 from nltk.corpus import brown
 from TextAnalyze import TextAnalyze
 
@@ -26,20 +27,21 @@ class LDA():
 
 
 if __name__ == "__main__":
-    ## Step 1.
-    print("step1,")
-    news = [file for file in brown.fileids() if 'news' in brown.categories(file)]
-    sents_list = [s for f in news[:5] for s in brown.sents(f)]
-    print(len(sents_list))
+    stopwords = nltk.corpus.stopwords.words('english')
 
-    ## Step 2.
-    print("step2,")
-    analyzer = TextAnalyze()
-    text = [analyzer.contentPreProcess(" ".join(s))[0] for s in sents_list]
+    ##brown
+    words = [w.lower() for w in brown.words(categories='news') if w not in string.punctuation]
+    sentences = brown.sents(categories='news')
 
-    ## Step 3.
-    print("step3,")
-    lda = LDA(text, 5).getModel()
-    for t in lda.print_topics():
-        print(t)
+    pmi = PMI(words, sentences)
+    #unique_w = list(dict.fromkeys(words))
+    unique_w = ["game", "sport", "ball", "team"]
+
+    ###test all pairwise
+    pairs = list(itertools.combinations(unique_w[:], 2))
+    for p in pairs:
+        print("-" * 20)
+        print(">>>>>PMI: " + str(pmi.pmi(p[0], p[1])))
+
+    title = ["x", "y", "p_x", "p_y", "p_xy", "pmi"]
 

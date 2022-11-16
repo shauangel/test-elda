@@ -1,10 +1,6 @@
-import string
-
 import nltk
-from nltk.corpus import brown
 from nltk import WordNetLemmatizer
 from math import log
-import itertools
 wnl=WordNetLemmatizer()
 
 
@@ -31,21 +27,3 @@ class PMI:
     def pmi(self, x, y):
         return log(self.pxy(x, y)/(self.p(x) * self.p(y)),2)
 
-if __name__ == "__main__":
-    stopwords = nltk.corpus.stopwords.words('english')
-
-    ##brown
-    words = [w.lower() for w in brown.words(categories='news') if w not in string.punctuation]
-    sentences = brown.sents(categories='news')
-
-    pmi = PMI(words, sentences)
-    #unique_w = list(dict.fromkeys(words))
-    unique_w = ["game", "sport", "ball", "team"]
-
-    ###test all pairwise
-    pairs = list(itertools.combinations(unique_w[:], 2))
-    for p in pairs:
-        print("-" * 20)
-        print(">>>>>PMI: " + str(pmi.pmi(p[0], p[1])))
-
-    title = ["x", "y", "p_x", "p_y", "p_xy", "pmi"]

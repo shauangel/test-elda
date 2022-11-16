@@ -39,7 +39,7 @@ class TextAnalyze:
         doc = nlp(text.lower())
 
         ###Step 2. remove punctuation
-        pure_word = [ token for token in doc if not token.is_punct and token.text != '\n' ]
+        pure_word = [ token.text for token in doc if not token.is_punct and token.text != '\n' ]
 
         ###Step 3. remove stopwords
         filtered_token = [ word for word in pure_word if word not in self.STOPWORDS ]

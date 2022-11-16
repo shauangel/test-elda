@@ -5,7 +5,7 @@ import itertools
 class UCI:
     def __init__(self, tokens, sents, target_list):
         self._PMI = PMI(tokens, sents)
-        self._Comb = itertools.combinations(target_list, 2)
+        self._Comb = list(itertools.combinations(target_list, 2))
 
     def coherence(self):
         pmi_sum = sum([self._PMI.pmi(p[0], p[1]) for p in self._Comb])

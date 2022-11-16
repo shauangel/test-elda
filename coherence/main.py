@@ -18,6 +18,7 @@ if __name__ == "__main__":
 ###pmi
 
     pmi = PMI(words, sentences)
+    print(">>>>>PMI: " + str(pmi.pmi("york", "city")))
     #unique_w = list(dict.fromkeys(words))
     #["weather", "york", "the", "team"]
     unique_w = ["game", "sport", "ball", "team"]
@@ -32,5 +33,5 @@ if __name__ == "__main__":
     #title = ["x", "y", "p_x", "p_y", "p_xy", "pmi"]
     """
     ###uci
-    c_model = UCI(words, sentences, unique_w)
-    print(c_model.coherence())
+    #c_model = UCI(words, sentences, unique_w)
+    #print(c_model.coherence())

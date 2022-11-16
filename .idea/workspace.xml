@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="915d9337-0e06-4f43-89de-229f1686443d" name="Changes" comment="update umass">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coherence/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/coherence/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/coherence/topic_coherence.py" beforeDir="false" afterPath="$PROJECT_DIR$/coherence/topic_coherence.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -178,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668576833919</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="update umass">
+      <created>1668580509370</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1668580509370</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

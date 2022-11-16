@@ -23,6 +23,10 @@ class UMass:
     def sortByProb(self):
         prob_list = {k:self._PMI.p(k) for k in self._Targ}
         print(prob_list)
+        prob_list = dict(sorted(prob_list.items(), key=lambda item: item[1]))
+        print(prob_list)
+        print(list(prob_list.keys()))
+
 
     def conditionalProb(self, x, y):
         pxy = self._PMI.pxy(x, y)

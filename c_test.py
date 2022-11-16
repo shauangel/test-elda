@@ -26,14 +26,17 @@ if __name__ == "__main__":
     ## Step 1.
     print("step1,")
     news = [file for file in brown.fileids() if 'news' in brown.categories(file)]
-    sents_list = [brown.sents(f) for f in news[:5]]
-
+    sents_list = [s for f in news[:5] for s in brown.sents(f)]
+    print(len(sents_list))
 
     ## Step 2.
     print("step2,")
     analyzer = TextAnalyze()
-    print(analyzer.contentPreProcess(" ".join(sents_list[0][0]))[0])
+    text = [analyzer.contentPreProcess(" ".join(s))[0] for s in sents_list]
 
-
+    ## Step 3.
+    lda = LDA(text, 5).getModel()
+    for t in lda.print_topics():
+        print(t)
 
 

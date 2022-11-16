@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import numpy as np
+#nltk
+import nltk
+#spacy
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS  ##停用詞
 from spacy_langdetect import LanguageDetector
@@ -14,7 +17,7 @@ from itertools import chain
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
 class TextAnalyze:
     
-    STOPWORDS = list(STOP_WORDS)               ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
+    STOPWORDS = nltk.corpus.stopwords.words('english')             ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
     POS_TAG = ['PROPN', 'ADJ', 'NOUN', 'VERB'] ##欲留下的詞類
     WHITE_LIST = ['pandas']
     
@@ -31,27 +34,28 @@ class TextAnalyze:
     
     #文本前置處理
     def contentPreProcess(self, text):
-        #translator = Translate(text)
-        #en_text = translator.getTranslate()
         nlp = spacy.load('en_core_web_sm')
-        ###Step 1. lowercase & tokenizing
+        ###Step 1. lowercase & tokenize
         doc = nlp(text.lower())
-        ###Step 2. reduce punctuation
+
+        ###Step 2. remove punctuation
         pure_word = [ token for token in doc if not token.is_punct and token.text != '\n' ]
-        ###Step 3. pos_tag filter & lemmatization
-        lemma = []
+
+        ###Step 3. remove stopwords
+        flitered_token = [ word for word in pure_word if word not in self.STOPWORDS ]
+
+        ###Step 4. pos_tag filter & lemmatization
+        lemma = [token.text if token.lemma_ == "-PRON-" or token.text in self.WHITE_LIST else token.lemma_ for token in doc if token.pos_ in self.POS_TAG]
+
+        """
         for token in pure_word:
             if token.pos_ in self.POS_TAG:
                 if token.lemma_  == "-PRON-" or token.text in self.WHITE_LIST:
                     lemma.append(token.text)
                 else:
                     lemma.append(token.lemma_)
-        #lemma = list(dict.fromkeys(lemma))    #reduce duplicate words
-        
-        ###Step 4. reduce stopwords & puncuation
-        flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop ]
-        
-        return flitered_token, doc
+        """
+        return lemma, doc
     
     #取得文章摘要 - extractive summarization
     def textSummarization(self, text):

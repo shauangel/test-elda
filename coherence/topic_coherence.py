@@ -21,7 +21,7 @@ class UMass:
 
     def conditionalProb(self, x, y):
         pxy = self._PMI.pxy(x, y)
-        py = self._PMI.px(y)
+        py = self._PMI.p(y)
         print("P(" + x + ", " + y + "): " + str(pxy/py))
         return pxy/py
     def coherence(self):

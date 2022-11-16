@@ -12,7 +12,6 @@ numpy = "*"
 spacy = "*"
 spacy-langdetect = "*"
 matplotlib = "*"
-nltk = "*"
 
 [dev-packages]
 

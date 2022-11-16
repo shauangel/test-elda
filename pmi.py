@@ -53,22 +53,8 @@ class LDA():
 
 
 if __name__ == "__main__":
-    sents = ["Betsy and I live in New York.",
-             "It pleased me doubly; to show off my fiancée and escape the rush of August in New York.",
-             "Both of us were new to New York City, and had few or no friends.",
-             "Betsy and I faced a six hour return trip to New York.",
-             "All pertained to the earlier tests Howie and Quinn had undertaken together while Betsy and I were still in New York.",
-             "She helped Carmen into the new dress.",
-             "Is it something new for the trip?",
-             "Emerging from the bathroom an hour later half asleep, she put the new nightgown on and climbed into bed.",
-             "The Internet has allowed for the creation of thousands of new ways to give, both time and money.",
-             "Do you think Jonathan might feel left out when the new baby comes?"]
     #print(len(_Sents))
     stopwords = nltk.corpus.stopwords.words('english')
-
-    ##custom sentences
-    #sentences = [nltk.word_tokenize(sen) for sen in sents]
-    #words = [t.lower() for t in list(itertools.chain.from_iterable(sentences)) if t not in string.punctuation]
 
     ##brown
     words = [w.lower() for w in brown.words(categories='news') if w not in string.punctuation]

@@ -29,3 +29,15 @@ class PMI:
         print("pmi: " + str(pmi_score))
         return pmi_score
 
+    ##joint self-information
+    def hxy(self, x, y):
+        h_xy = -log(self.pxy(x, y), 2)
+        print("h(" + x + ", " + y + "): " + str(h_xy))
+        return h_xy
+
+    ##normalized pmi
+    def npmi(self, x, y):
+        score = self.pmi(x, y)/self.hxy(x, y)
+        print("npmi score: " + str(score))
+        return score
+

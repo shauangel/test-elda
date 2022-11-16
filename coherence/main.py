@@ -5,7 +5,7 @@ import nltk
 from nltk.corpus import brown
 ##custom
 from pmi import PMI
-from topic_coherence import UCI, UMass
+from topic_coherence import UCI, UMass, NPMI
 
 
 if __name__ == "__main__":
@@ -18,10 +18,10 @@ if __name__ == "__main__":
 ###pmi
 
     pmi = PMI(words, sentences)
-    print(">>>>>PMI: " + str(pmi.pmi("york", "city")))
+    #print(">>>>>PMI: " + str(pmi.pmi("york", "city")))
     #unique_w = list(dict.fromkeys(words))
-    #["weather", "york", "the", "team"]
-    unique_w = ["game", "sport", "ball", "team"]
+    unique_w = ["weather", "york", "the", "team"]
+    #unique_w = ["game", "sport", "ball", "team"]
 
     """
     ###test all pairwise
@@ -37,6 +37,9 @@ if __name__ == "__main__":
     #print(c_model.coherence())
 
     ###umass
-    c_model = UMass(words, sentences, unique_w)
+    #c_model = UMass(words, sentences, unique_w)
+    #print(cNPMI_model.coherence())
+
+    ###npmi
+    c_model = NPMI(words, sentences, unique_w)
     print(c_model.coherence())
-    c_model.sortByProb()

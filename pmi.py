@@ -5,17 +5,9 @@ from nltk.corpus import brown
 from nltk import WordNetLemmatizer
 from math import log
 import itertools
-
-from gensim.models import Lda
-from gensim.corpora.dictionary import Dictionary
-from gensim.models.coherencemodel import CoherenceModel
-
 wnl=WordNetLemmatizer()
 
 
-#_Fdist = nltk.FreqDist([wnl.lemmatize(w.lower()) for w in brown.words(categories='news')])
-
-#_Sents = [[wnl.lemmatize(j.lower()) for j in i] for i in brown.sents(categories='news')]
 class PMI:
     def __init__(self, tokens, sents):
         self._Fdist = nltk.FreqDist([wnl.lemmatize(w.lower()) for w in tokens])
@@ -39,21 +31,7 @@ class PMI:
     def pmi(self, x, y):
         return log(self.pxy(x, y)/(self.p(x) * self.p(y)),2)
 
-class LDA():
-    def __init__(self, path):
-        try:
-            Lda.load(path)
-        except:
-            print("no such model...")
-    def __init__(self, corpus, dictionary, topic_num):
-        self.model = Lda(corpus=corpus, id2word=dictionary, num_topics=topic_num)
-        self._Dict = dictionary
-        self._Corp = corpus
-
-
-
 if __name__ == "__main__":
-    #print(len(_Sents))
     stopwords = nltk.corpus.stopwords.words('english')
 
     ##brown

@@ -61,16 +61,8 @@ if __name__ == "__main__":
     sentences = brown.sents(categories='news')
 
     pmi = PMI(words, sentences)
-    #print(pmi.pmi("new", "york"))
-    #print("-"*20)
-    #print(pmi.pmi("new", "the"))
-    #print("-" * 20)
-    #print(pmi.pmi("york", "the"))
-    #print("-" * 20)
-    #print(pmi.pmi("new", "sport"))
     #unique_w = list(dict.fromkeys(words))
     unique_w = ["game", "sport", "ball", "team"]
-    #print(unique_w[:10])
 
     ###test all pairwise
     pairs = list(itertools.combinations(unique_w[:], 2))

@@ -25,16 +25,21 @@ class LDA():
 if __name__ == "__main__":
     ## Step 1.
     print("step1,")
-    news = [file for file in brown.fileids() if 'news' in brown.categories(file)]
-    word_list = [brown.words(file) for file in news]
+    sents_list = brown.sents(categories='news')
 
 
     ## Step 2.
     print("step2,")
     analyzer = TextAnalyze()
-    text = [analyzer.contentPreProcess(" ".join(l))[0] for l in word_list]
+    text = [analyzer.contentPreProcess(" ".join(l))[0] for l in sents_list]
 
     print(len(text))
 
+    print(text[0])
+
+    ## Step 3.
+    lda = LDA(text, 5).getModel()
+    for t in lda.print_topics(-1):
+        print(t)
 
 

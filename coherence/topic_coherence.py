@@ -1,6 +1,8 @@
 from pmi import PMI
 import itertools
 from math import log
+from scipy import spatial
+
 
 
 class UCI:
@@ -47,3 +49,33 @@ class NPMI:
         print("npmi_sum: " + str(npmi_sum))
         print(self._Comb)
         return (2/(len(self._Comb)*(len(self._Comb)-1)))*npmi_sum
+
+class Vector:
+    def __init__(self, tokens, sents, target_list):
+        self._PMI = PMI(tokens, sents)
+        self._Targ = target_list
+        self._Comb = list(itertools.combinations(target_list, 2))
+
+    #generate context vector
+    def v(self, x):
+        contextV = [self._PMI.npmi(x, i) for i in self._Targ]
+        print("v_" + x + ": ")
+        print(contextV)
+        return contextV
+
+    #cosine similarity
+    def cos_sim(self, x, y):
+        cosine_similarity = 1 - float(spatial.distance.cosine(x, y))
+        print("cos: " + str(cosine_similarity))
+        return cosine_similarity
+
+    ##coherence score
+    def coherence(self):
+        v_list = [self.v(x) for x in self._Targ]
+        vec_comb = list(itertools.combinations(v_list, 2))
+        print("--"*10)
+        print(vec_comb)
+        print("--" * 10)
+        word_co = (2/(len(vec_comb)*(len(vec_comb)-1)))
+        cos = sum([self.cos_sim(v[0], v[1]) for v in vec_comb])
+        return word_co*cos

@@ -12,15 +12,15 @@ class PMI:
     #計算word x出現的機率
     def p(self, x):
         p_x = self._Fdist[x]/float(len(self._Fdist))
-        print("Calculate p(" + x + ")...")
-        print(str(self._Fdist[x])+ "/" + str(len(self._Fdist)) + "= " + str(p_x))
+        #print("Calculate p(" + x + ")...")
+        #print(str(self._Fdist[x])+ "/" + str(len(self._Fdist)) + "= " + str(p_x))
         return p_x
 
     #計算word x, word y出現在同一個sentence的機率
     def pxy(self, x, y):
         p_xy = (len(list(filter(lambda s : x in s and y in s ,self._Sents)))+1) / float(len(self._Sents))
-        print("Calculate p(" + x + ", " + y + ")...")
-        print(str(len(list(filter(lambda s : x in s and y in s ,self._Sents)))) + "/" + str(len(self._Sents)) + "=" + str(p_xy))
+        #print("Calculate p(" + x + ", " + y + ")...")
+        #print(str(len(list(filter(lambda s : x in s and y in s ,self._Sents)))) + "/" + str(len(self._Sents)) + "=" + str(p_xy))
         return p_xy
 
     #計算pmi
@@ -32,7 +32,7 @@ class PMI:
     ##joint self-information
     def hxy(self, x, y):
         h_xy = -log(self.pxy(x, y), 2)
-        print("h(" + x + ", " + y + "): " + str(h_xy))
+        #print("h(" + x + ", " + y + "): " + str(h_xy))
         return h_xy
 
     ##normalized pmi

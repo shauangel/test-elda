@@ -21,6 +21,9 @@ class LDA():
     def getModel(self):
         return self.model
 
+    def saveModel(self):
+        self.model.save("/c_test/model")
+
 
 if __name__ == "__main__":
     ## Step 1.
@@ -35,8 +38,8 @@ if __name__ == "__main__":
     text = [analyzer.contentPreProcess(" ".join(s))[0] for s in sents_list]
 
     ## Step 3.
+    print("step3,")
     lda = LDA(text, 5).getModel()
     for t in lda.print_topics():
         print(t)
-
 

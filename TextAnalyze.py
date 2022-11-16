@@ -42,10 +42,10 @@ class TextAnalyze:
         pure_word = [ token for token in doc if not token.is_punct and token.text != '\n' ]
 
         ###Step 3. remove stopwords
-        flitered_token = [ word for word in pure_word if word not in self.STOPWORDS ]
+        flitered_token = [ word for word in pure_word if word.text not in self.STOPWORDS ]
 
         ###Step 4. pos_tag filter & lemmatization
-        lemma = [token.text if token.lemma_ == "-PRON-" or token.text in self.WHITE_LIST else token.lemma_ for token in doc if token.pos_ in self.POS_TAG]
+        lemma = [token.text if token.lemma_ == "-PRON-" or token.text in self.WHITE_LIST else token.lemma_ for token in flitered_token if token.pos_ in self.POS_TAG]
 
         """
         for token in pure_word:

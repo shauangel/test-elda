@@ -5,7 +5,7 @@ import nltk
 from nltk.corpus import brown
 ##custom
 from pmi import PMI
-from topic_coherence import UCI, UMass, NPMI
+from topic_coherence import UCI, UMass, NPMI, Vector
 
 
 if __name__ == "__main__":
@@ -41,5 +41,9 @@ if __name__ == "__main__":
     #print(cNPMI_model.coherence())
 
     ###npmi
-    c_model = NPMI(words, sentences, unique_w)
+    #c_model = NPMI(words, sentences, unique_w)
+    #print(c_model.coherence())
+
+    ###v
+    c_model = Vector(words, sentences, unique_w)
     print(c_model.coherence())

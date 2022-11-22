@@ -12,6 +12,8 @@ numpy = "*"
 spacy = "*"
 spacy-langdetect = "*"
 matplotlib = "*"
+pymongo = "*"
+pytz = "*"
 
 [dev-packages]
 

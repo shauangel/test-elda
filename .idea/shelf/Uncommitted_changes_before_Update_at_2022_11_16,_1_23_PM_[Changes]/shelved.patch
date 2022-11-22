@@ -1,0 +1,92 @@
+Index: coherence/main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>##dependecies\nimport string\nimport itertools\nimport nltk\nfrom nltk.corpus import brown\n##custom\nfrom pmi import PMI\nfrom topic_coherence import UCI\n\n\nif __name__ == \"__main__\":\n    stopwords = nltk.corpus.stopwords.words('english')\n\n    ##brown\n    words = [w.lower() for w in brown.words(categories='news') if w not in string.punctuation]\n    sentences = brown.sents(categories='news')\n\n###pmi\n\n    pmi = PMI(words, sentences)\n    #unique_w = list(dict.fromkeys(words))\n    unique_w = [\"game\", \"sport\", \"ball\", \"team\"]\n\n    \"\"\"\n    ###test all pairwise\n    pairs = list(itertools.combinations(unique_w[:], 2))\n    for p in pairs:\n        print(\"-\" * 20)\n        print(\">>>>>PMI: \" + str(pmi.pmi(p[0], p[1])))\n\n    #title = [\"x\", \"y\", \"p_x\", \"p_y\", \"p_xy\", \"pmi\"]\n    \"\"\"\n    ###uci\n    c_model = UCI(words, sentences, unique_w)\n    print(c_model.coherence())
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/coherence/main.py b/coherence/main.py
+--- a/coherence/main.py	(revision 9c166fa55e1c79822baff83bf87f16f54fac8555)
++++ b/coherence/main.py	(date 1668570062577)
+@@ -18,6 +18,7 @@
+ ###pmi
+ 
+     pmi = PMI(words, sentences)
++    print(">>>>>PMI: " + str(pmi.pmi("york", "city")))
+     #unique_w = list(dict.fromkeys(words))
+     unique_w = ["game", "sport", "ball", "team"]
+ 
+@@ -31,5 +32,5 @@
+     #title = ["x", "y", "p_x", "p_y", "p_xy", "pmi"]
+     """
+     ###uci
+-    c_model = UCI(words, sentences, unique_w)
+-    print(c_model.coherence())
+\ No newline at end of file
++    #c_model = UCI(words, sentences, unique_w)
++    #print(c_model.coherence())
+\ No newline at end of file
+Index: coherence/topic_coherence.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from pmi import PMI\nimport itertools\n\n\nclass UCI:\n    def __init__(self, tokens, sents, target_list):\n        self._PMI = PMI(tokens, sents)\n        self._Comb = list(itertools.combinations(target_list, 2))\n\n    def coherence(self):\n        pmi_sum = sum([self._PMI.pmi(p[0], p[1]) for p in self._Comb])\n        print(\"pmi_sum: \" + str(pmi_sum))\n        return 2/(len(self._Comb)*(len(self._Comb)-1))*pmi_sum
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/coherence/topic_coherence.py b/coherence/topic_coherence.py
+--- a/coherence/topic_coherence.py	(revision 9c166fa55e1c79822baff83bf87f16f54fac8555)
++++ b/coherence/topic_coherence.py	(date 1668570201899)
+@@ -10,4 +10,16 @@
+     def coherence(self):
+         pmi_sum = sum([self._PMI.pmi(p[0], p[1]) for p in self._Comb])
+         print("pmi_sum: " + str(pmi_sum))
+-        return 2/(len(self._Comb)*(len(self._Comb)-1))*pmi_sum
+\ No newline at end of file
++        return 2/(len(self._Comb)*(len(self._Comb)-1))*pmi_sum
++
++
++class UMass:
++    def __init__(self, tokens, sents, target_list):
++        self._PMI = PMI(tokens, sents)
++        self._Comb = list(itertools.combinations(target_list, 2))
++
++    def conditionalProb(self, x, y):
++        return self._PMI.pxy(x, y)/self._PMI.p(y)
++
++    def coherence(self):
++        cond_sum =
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"915d9337-0e06-4f43-89de-229f1686443d\" name=\"Changes\" comment=\"update\">\n      <change beforePath=\"$PROJECT_DIR$/coherence/topic_coherence.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/coherence/topic_coherence.py\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2FheNDBpDrQ4ubMu4Bl82nRtHUo\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\n    \"ASKED_SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"last_opened_file_path\": \"/Users/shauangel/Documents/GitHub/test-elda/coherence\",\n    \"settings.editor.selected.configurable\": \"preferences.lookFeel\"\n  }\n}]]></component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/coherence\" />\n    </key>\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/coherence\" />\n    </key>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"915d9337-0e06-4f43-89de-229f1686443d\" name=\"Changes\" comment=\"\" />\n      <created>1664948701406</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1664948701406</updated>\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"update\">\n      <created>1668561970480</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668561970480</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"update\">\n      <created>1668562016845</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668562016845</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"update\">\n      <created>1668562151747</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668562151747</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"update\">\n      <created>1668562748970</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668562748970</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"update\">\n      <created>1668563021555</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668563021555</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"update\">\n      <created>1668563916989</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668563916989</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"update\">\n      <created>1668564798100</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668564798100</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\"update\">\n      <created>1668566570396</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668566570396</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"update\">\n      <created>1668566868777</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668566868777</updated>\n    </task>\n    <task id=\"LOCAL-00010\" summary=\"update\">\n      <created>1668566989780</created>\n      <option name=\"number\" value=\"00010\" />\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668566989780</updated>\n    </task>\n    <task id=\"LOCAL-00011\" summary=\"update\">\n      <created>1668567013916</created>\n      <option name=\"number\" value=\"00011\" />\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668567013916</updated>\n    </task>\n    <task id=\"LOCAL-00012\" summary=\"update\">\n      <created>1668567343800</created>\n      <option name=\"number\" value=\"00012\" />\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668567343800</updated>\n    </task>\n    <task id=\"LOCAL-00013\" summary=\"update\">\n      <created>1668568276102</created>\n      <option name=\"number\" value=\"00013\" />\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668568276102</updated>\n    </task>\n    <task id=\"LOCAL-00014\" summary=\"update\">\n      <created>1668569394301</created>\n      <option name=\"number\" value=\"00014\" />\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1668569394301</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"15\" />\n    <servers />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\n    <MESSAGE value=\"update\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"update\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 9c166fa55e1c79822baff83bf87f16f54fac8555)
++++ b/.idea/workspace.xml	(date 1668570056995)
+@@ -2,6 +2,8 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="915d9337-0e06-4f43-89de-229f1686443d" name="Changes" comment="update">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/coherence/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/coherence/main.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/coherence/topic_coherence.py" beforeDir="false" afterPath="$PROJECT_DIR$/coherence/topic_coherence.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -148,7 +150,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1668569394301</updated>
+     </task>
+-    <option name="localTasksCounter" value="15" />
++    <task id="LOCAL-00015" summary="update">
++      <created>1668569493941</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1668569493941</updated>
++    </task>
++    <option name="localTasksCounter" value="16" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">

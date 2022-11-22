@@ -79,3 +79,6 @@ class Vector:
         word_co = (2/(len(vec_comb)*(len(vec_comb)-1)))
         cos = sum([self.cos_sim(v[0], v[1]) for v in vec_comb])
         return word_co*cos
+
+    def centroid_coherence(self, v_c):
+        return

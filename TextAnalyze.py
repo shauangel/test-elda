@@ -12,6 +12,7 @@ from heapq import nlargest
 ###LDA model
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import LdaModel
+from gensim.models import EnsembleLda
 from itertools import chain
 
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
@@ -129,6 +130,13 @@ class TextAnalyze:
         print(np.array([ top3pred_sim[i] * top3_prob[i] for i in range(3) ]))
         score_result = np.sum(np.array([ top3pred_sim[i] * top3_prob[i] for i in range(3) ]), axis=0)
         return score_result
+
+    def eLDATopicModeling(self, data, topic_num, model_num):
+        dictionary = Dictionary(data)
+        corpus = [dictionary.doc2bow(text) for text in data]
+        elda = EnsembleLda(corpus=corpus, id2word=dictionary, num_topics=topic_num, num_models=model_num)
+        #lda_model = LdaModel(corpus, num_topics=topic_num, id2word=dictionary, per_word_topics=True)
+        return elda
 
 
 

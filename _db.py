@@ -19,6 +19,7 @@ OUTER_DATA_COLLECTION = DB['OuterData']
 OUTER_DATA_CACHE_COLLECTION = DB['OuterDataCache']
 FAQ_DATA_COLLECTION = DB['FAQData']
 CHAT_DATA_COLLECTION = DB['ChatData']
+TOPIC_DATA_COLLECTION = DB['Topic']
 
 pacific = pytz.timezone('Asia/Taipei')
 

@@ -5,9 +5,8 @@ import csv
 import re
 
 
-def save_topic(tokens, p):
-    data_format = {"token":tokens, "prob":p}
-    _db.TOPIC_DATA_COLLECTION.insert_one(data_format)
+def save_models(data):
+    _db.TOPIC_DATA_COLLECTION.insert_one(data)
 
 
 # --> load data from db <--
@@ -26,34 +25,18 @@ def load_data():
     return articles
 
 
-def generate_tags(text_list, corpus_file, result_file):
-    t_a = TextAnalyze()
-    print("Pre-processing...")
-    corpus = [t_a.contentPreProcess(" ".join(i))[0] for i in text_list]
-    print("Save corpus...")
-    with open( corpus_file+'.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        for article in corpus:
-            writer.writerow(article)
-
+def generate_tags(text, topic_num, model_num):
     print("Train model...")
-    model = t_a.eLDATopicModeling(corpus, 100, 5)
-    tokens = []
+    model, c_s = t_a.eLDATopicModeling(text, topic_num, model_num)
     topics = []
     print("Display topics...")
     for t in model.print_topics(-1):
         words = re.findall(r'\*"(.*?)"', t[1])
         p = re.findall(r'(\d*.\d*?)\*', t[1])
-        tokens += words
-        distribution_dict = {words[i]:p[i] for i in range(len(words))}
-        topics.append(distribution_dict)
+        topics.append({"tokens":words, "prob":p})
         print(words)
-    tokens = list(dict.fromkeys(tokens))
-    with open( result_file+'.csv', 'w', newline='') as csvfile:
-        dict_writer = csv.DictWriter(csvfile, fieldnames=tokens)
-        dict_writer.writeheader()
-        for t in topics:
-            dict_writer.writerow(t)
+    info = {"num_t":topic_num, "num_m":model_num, "topics":topics}
+    save_models({**info, **c_s})
     return model
 
 
@@ -93,4 +76,21 @@ def parse_full_post():
 if __name__ == "__main__":
     data = load_data()
     print(len(data))
-    generate_tags(data[:500], "corpus_02", "result_02")
+    t_a = TextAnalyze()
+    raw_text = [" ".join(t) for t in data]
+
+    # 500post 250t 5m 5iterations
+    print("500post 250t 5m 5iterations...")
+    text = [t_a.contentPreProcess(i)[0] for i in raw_text[:500]]
+    for i in range(5):
+        print("Starts iteration " + str(i))
+        generate_tags(text, 250, 5)
+        print("Finished")
+
+    # 100post 50t 5m 5slots
+    print("100post 50t 5m 5slots...")
+    for i in range(5):
+        print("Start slot " + str(i))
+        text = [t_a.contentPreProcess()[0] for w in raw_text[i*100:(i+1)*100]]
+        model = generate_tags(text, 50, 5)
+        print("Finished")

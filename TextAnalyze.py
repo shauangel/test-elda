@@ -11,8 +11,7 @@ from heapq import nlargest
 #from Translate import Translate
 ###LDA model
 from gensim.corpora.dictionary import Dictionary
-from gensim.models import LdaModel
-from gensim.models import EnsembleLda
+from gensim.models import LdaModel, EnsembleLda, CoherenceModel
 from itertools import chain
 
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
@@ -131,12 +130,58 @@ class TextAnalyze:
         score_result = np.sum(np.array([ top3pred_sim[i] * top3_prob[i] for i in range(3) ]), axis=0)
         return score_result
 
+
+    # eLDA
     def eLDATopicModeling(self, data, topic_num, model_num):
         dictionary = Dictionary(data)
         corpus = [dictionary.doc2bow(text) for text in data]
         elda = EnsembleLda(corpus=corpus, id2word=dictionary, num_topics=topic_num, num_models=model_num)
-        #lda_model = LdaModel(corpus, num_topics=topic_num, id2word=dictionary, per_word_topics=True)
-        return elda
+        c_s = self.coherenceMeasurement(elda, data, dictionary, corpus)
+        return elda, c_s
+
+
+    def coherenceMeasurement(self, model, raw_text, dictionary, corpus):
+        # Coherence Measure
+        c_v = ""; u_mass = ""; c_uci = ""; c_npmi = ""
+        c_v_per_t = []; u_mass_per_t = []; c_uci_per_t = []; c_npmi_per_t = []
+
+        ##c_v measure
+        cm_c_v_model = CoherenceModel(model=model, topn=8, texts=raw_text, corpus=corpus,
+                                      dictionary=dictionary, coherence="c_v")
+        try:
+            c_v = "{:5.4f}".format(cm_c_v_model.get_coherence())
+            c_v_per_t = cm_c_v_model.get_coherence_per_topic()
+        except:
+            print("mathematic err...")
+
+        ##u_mass measure
+        cm_u_mass_model = CoherenceModel(model=model, topn=8, corpus=corpus, dictionary=dictionary, coherence="u_mass")
+        try:
+            u_mass = "{:5.4f}".format(cm_u_mass_model.get_coherence())
+            u_mass_per_t = cm_u_mass_model.get_coherence_per_topic()
+        except:
+            print("mathematic err...")
+
+        ##c_uci measure
+        cm_c_uci_model = CoherenceModel(model=model, topn=8, texts=raw_text, corpus=corpus,
+                                        dictionary=dictionary, coherence="c_uci")
+        try:
+            c_uci = "{:5.4f}".format(cm_c_uci_model.get_coherence())
+            c_uci_per_t = cm_c_uci_model.get_coherence_per_topic()
+        except:
+            print("mathematic err...")
+
+        ##c_npmi measure
+        cm_c_npmi_model = CoherenceModel(model=model, topn=8, texts=raw_text, corpus=corpus,
+                                         dictionary=dictionary, coherence="c_npmi")
+        try:
+            c_npmi = "{:5.4f}".format(cm_c_npmi_model.get_coherence())
+            c_npmi_per_t = cm_c_npmi_model.get_coherence_per_topic()
+        except:
+            print("mathematic err...")
+        # Display result
+        return {"c_v": c_v, "u_mass": u_mass, "c_uci": c_uci, "c_npmi": c_npmi,
+            "c_v_per_topic": c_v_per_t, "u_mass_per_topic": u_mass_per_t, "c_uci_per_topic": c_uci_per_t, "c_npmi_per_topic": c_npmi_per_t}
 
 
 

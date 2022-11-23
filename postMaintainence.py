@@ -4,9 +4,11 @@ from TextAnalyze import TextAnalyze
 import csv
 import re
 
+
 def save_topic(tokens, p):
     data_format = {"token":tokens, "prob":p}
-    _db.TOPIC_DATA_COLLECTION.insert_one
+    _db.TOPIC_DATA_COLLECTION.insert_one(data_format)
+
 
 # --> load data from db <--
 def load_data():

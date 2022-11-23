@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="915d9337-0e06-4f43-89de-229f1686443d" name="Changes" comment="update umass">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TextAnalyze.py" beforeDir="false" afterPath="$PROJECT_DIR$/TextAnalyze.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/postMaintainence.py" beforeDir="false" afterPath="$PROJECT_DIR$/postMaintainence.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -220,7 +219,21 @@
       <option name="project" value="LOCAL" />
       <updated>1669100073694</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="update umass">
+      <created>1669154137982</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1669154137982</updated>
+    </task>
+    <task id="LOCAL-00026" summary="update umass">
+      <created>1669171001994</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1669171001994</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -87,7 +87,7 @@ def counter_cosine_similarity(listA, listB):
 
 
 if __name__ == "__main__":
-    """
+
     data = load_data()
     print(len(data))
     t_a = TextAnalyze()
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     with open("result.csv", 'w', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerows(per_topic)
-    """
+    
     t_list = []
     with open("result.csv", 'r', encoding='utf-8') as f:
         topics = csv.reader(f)
@@ -139,5 +139,5 @@ if __name__ == "__main__":
     for i in range(len(t_list)):
         print(t_list[i])
         print([counter_cosine_similarity(t_list[i], t_list[j]) for j in range(len(t_list))])
-
     """
+

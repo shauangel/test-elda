@@ -18,7 +18,7 @@ from itertools import chain
 class TextAnalyze:
     
     STOPWORDS = []             ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
-    POS_TAG = ['PROPN', 'ADJ', 'NOUN', 'VERB'] ##欲留下的詞類
+    POS_TAG = ['PROPN', 'ADJ', 'NOUN'] ##欲留下的詞類verb
     WHITE_LIST = ['pandas']
     
     def __init__(self):

@@ -17,11 +17,17 @@ from itertools import chain
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
 class TextAnalyze:
     
-    STOPWORDS = nltk.corpus.stopwords.words('english')             ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
+    STOPWORDS = []             ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
     POS_TAG = ['PROPN', 'ADJ', 'NOUN', 'VERB'] ##欲留下的詞類
     WHITE_LIST = ['pandas']
     
     def __init__(self):
+        try:
+            self.STOPWORDS = nltk.corpus.stopwords.words('english')
+        except:
+            nltk.download('stopwords')
+            self.STOPWORDS = nltk.corpus.stopwords.words('english')
+        self.STOPWORDS += ['use', 'python']
         return
     
     #語言辨識

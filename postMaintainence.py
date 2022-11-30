@@ -3,6 +3,8 @@ from StackData import StackData
 from TextAnalyze import TextAnalyze
 import csv
 import re
+import math
+from collections import Counter
 
 
 def save_models(data):
@@ -27,6 +29,7 @@ def load_data():
 
 def generate_tags(text, topic_num, model_num):
     print("Train model...")
+    t_a = TextAnalyze()
     model, c_s = t_a.eLDATopicModeling(text, topic_num, model_num)
     topics = []
     print("Display topics...")
@@ -73,6 +76,16 @@ def parse_full_post():
                 break
 
 
+def counter_cosine_similarity(listA, listB):
+    c1 = Counter(listA)
+    c2 = Counter(listB)
+    terms = set(c1).union(c2)
+    dotprod = sum(c1.get(k, 0) * c2.get(k, 0) for k in terms)
+    magA = math.sqrt(sum(c1.get(k, 0)**2 for k in terms))
+    magB = math.sqrt(sum(c2.get(k, 0)**2 for k in terms))
+    return round(dotprod / (magA * magB))
+
+
 if __name__ == "__main__":
     """
     data = load_data()
@@ -97,4 +110,34 @@ if __name__ == "__main__":
         print("Finished")
     """
     # finding threshold
+    data = _db.TOPIC_DATA_COLLECTION.find({"num_t" : 50})
+    title = ["c_v", "u_mass", "c_uci", "c_npmi", "token", "prob"]
+    per_topic = []
+    per_topic.append(title)
+    for m in data:
+        for idx in range(len(m['topics'])):
+            tokens = ", ".join(m['topics'][idx]['tokens'])
+            probs = ", ".join(m['topics'][idx]['prob'])
+            t = [m['c_v_per_topic'][idx],
+                 m['u_mass_per_topic'][idx],
+                 m['c_uci_per_topic'][idx],
+                 m['c_npmi_per_topic'][idx],
+                 tokens, probs]
+            print(t)
+            per_topic.append(t)
+    
+    with open("result.csv", 'w', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(per_topic)
+    """
+    t_list = []
+    with open("result.csv", 'r', encoding='utf-8') as f:
+        topics = csv.reader(f)
+        t_list = [i[4].split(", ") for i in topics]
 
+    # n^2 calculate similarity of list
+    for i in range(len(t_list)):
+        print(t_list[i])
+        print([counter_cosine_similarity(t_list[i], t_list[j]) for j in range(len(t_list))])
+
+    """

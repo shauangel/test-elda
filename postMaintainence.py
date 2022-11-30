@@ -111,10 +111,11 @@ if __name__ == "__main__":
     """
     # finding threshold
     data = _db.TOPIC_DATA_COLLECTION.find({"num_t" : 50})
+    models = [m for m in data]
     title = ["c_v", "u_mass", "c_uci", "c_npmi", "token", "prob"]
     per_topic = []
     per_topic.append(title)
-    for m in data:
+    for m in models[len(models)-5, :]:
         for idx in range(len(m['topics'])):
             tokens = ", ".join(m['topics'][idx]['tokens'])
             probs = ", ".join(m['topics'][idx]['prob'])

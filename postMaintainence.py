@@ -94,18 +94,18 @@ if __name__ == "__main__":
     raw_text = [" ".join(t) for t in data]
 
     # 500post 250t 5m 5iterations
-    print("500post 250t 5m 5iterations...")
-    text = [t_a.contentPreProcess(i)[0] for i in raw_text[:500]]
-    for i in range(5):
-        print("Starts iteration " + str(i))
-        generate_tags(text, 250, 5)
-        print("Finished")
+    #print("500post 250t 5m 5iterations...")
+    #text = [t_a.contentPreProcess(i)[0] for i in raw_text[:500]]
+    #for i in range(5):
+    #    print("Starts iteration " + str(i))
+    #    generate_tags(text, 250, 5)
+    #    print("Finished")
 
     # 100post 50t 5m 5slots
     print("100post 50t 5m 5slots...")
     for i in range(5):
         print("Start slot " + str(i))
-        text = [t_a.contentPreProcess()[0] for w in raw_text[i*100:(i+1)*100]]
+        text = [t_a.contentPreProcess(w)[0] for w in raw_text[i*100:(i+1)*100]]
         model = generate_tags(text, 50, 5)
         print("Finished")
     """

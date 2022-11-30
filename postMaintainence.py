@@ -74,6 +74,7 @@ def parse_full_post():
 
 
 if __name__ == "__main__":
+    """
     data = load_data()
     print(len(data))
     t_a = TextAnalyze()
@@ -94,3 +95,6 @@ if __name__ == "__main__":
         text = [t_a.contentPreProcess()[0] for w in raw_text[i*100:(i+1)*100]]
         model = generate_tags(text, 50, 5)
         print("Finished")
+    """
+    # finding threshold
+
